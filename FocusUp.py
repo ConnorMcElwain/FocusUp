@@ -64,6 +64,18 @@ while True:  # Program loop
             else:
                 print("No websites to unblock.")
 
+    # Function to show blocked websites
+    def show_blocked_websites():
+        with open(host_file_path, "r") as file:
+            content = file.read()  # Fix the syntax here
+            blocked_sites = [website for website in website_list if is_website_blocked(website)]
+            if blocked_sites:
+                print("Blocked websites:")
+                for site in blocked_sites:
+                    print(site)
+            else:
+                print("No websites are currently blocked.")
+
     # Function to clear the terminal window
     def clear_terminal():
         if platform.system() == "Windows":
@@ -81,7 +93,7 @@ while True:  # Program loop
         selected_websites = []
         while True:
             try:
-                choice = input("Enter the number of the website to block (0 to apply blocked sites, -1 to unblock all, 'exit' to close program): ")
+                choice = input("Enter the number of the website to block (0 to apply blocked sites, -1 to unblock all, 'show' to display blocked websites, 'exit' to close program): ")
                 if choice == '0':
                     if selected_websites:
                         print("Blocking selected websites...")
@@ -95,7 +107,9 @@ while True:  # Program loop
                     unblock_all_websites()
                     selected_websites = []  # Clear the list of selected websites
                 elif choice.lower() == 'exit':
-                    break
+                    sys.exit()  # Exit the program
+                elif choice.lower() == 'show':
+                    show_blocked_websites()
                 elif choice.isdigit() and 1 <= int(choice) <= len(website_list):
                     selected_website = website_list[int(choice) - 1]
                     if not is_website_blocked(selected_website):
@@ -103,14 +117,6 @@ while True:  # Program loop
                     else:
                         print(f"{selected_website} is already blocked. Please select another option.")
                 else:
-                    print("Invalid choice. Please enter a valid number or type 'exit'.")
+                    print("Invalid choice. Please enter a valid number or type 'show', 'exit'.")
             except ValueError:
-                print("Invalid input. Please enter a number or type 'exit'.")
-        if choice == 'exit':
-            break  # Exit the program loop
-
-    # Display the notification message when a blocked website is accessed
-    notification_message = "Hey! Focus up and get back to work."
-    user_input = input("Press Enter to continue or type 'exit' again to close the program: ")
-    if user_input.lower() == 'exit':
-        break  # Exit the program loop
+                print("Invalid input. Please enter a number or type 'show', 'exit'.")
