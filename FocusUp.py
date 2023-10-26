@@ -55,7 +55,12 @@ def unblock_all_websites():
     with open(host_file_path, "w") as file:
         websites_unblocked = False  # Flag to track whether websites were unblocked
         for line in lines:
-            if all(website not in line for website in website_list):
+            blocked = False
+            for website in gaming_websites + social_websites:
+                if f"127.0.0.1 {website}" in line:
+                    blocked = True
+                    break
+            if not blocked:
                 file.write(line)
                 websites_unblocked = True  # Set the flag to True if any website is unblocked
         if websites_unblocked:
@@ -70,7 +75,7 @@ def show_blocked_websites():
     with open(host_file_path, "r") as file:
         lines = file.readlines()
         for website in website_list:
-            if f"127.0.0.1 {website}" in "".join(lines):
+            if any(f"127.0.0.1 {website}" in line for line in lines):
                 blocked_sites.append(website)
 
     if blocked_sites:
@@ -131,7 +136,8 @@ def select_category(category):
 def select_all_sites():
     clear_terminal()
     all_sites = gaming_websites + social_websites
-    print("All Sites:")
+    print("Main Menu:")
+    print("3. All Sites")
     for index, website in enumerate(all_sites, start=1):
         print(f"{index}. {website}")
     print("B. Back")
