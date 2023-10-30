@@ -41,6 +41,8 @@ def block_websites(websites_to_block):
         for website in websites_to_block:
             if not is_website_blocked(website):
                 blocked_websites.append(website)
+                if website == "www.x.com":
+                    content += f"\n127.0.0.1 www.twitter.com"  # Block twitter.com when x.com is blocked
                 content += f"\n127.0.0.1 {website}"
         if blocked_websites:
             with open(host_file_path, "w") as file:
@@ -60,6 +62,8 @@ def unblock_all_websites():
                 if f"127.0.0.1 {website}" in line:
                     blocked = True
                     break
+            if f"127.0.0.1 www.twitter.com" in line:
+                blocked = True  # Ensure www.twitter.com is blocked
             if not blocked:
                 file.write(line)
                 websites_unblocked = True  # Set the flag to True if any website is unblocked
@@ -115,7 +119,7 @@ def select_category(category):
                     print("Blocking selected websites...")
                     blocked_websites = block_websites(selected_websites)
                     if blocked_websites:
-                        print("Websites are blocked. To unblock them, run the program again and select 'unblock'.")
+                        print("Websites are blocked. To unblock them select the 'Unblock All Websites' option.")
                     selected_websites = []
                 input("Press Enter to continue...")
                 break
@@ -151,7 +155,7 @@ def select_all_sites():
                     print("Blocking selected websites...")
                     blocked_websites = block_websites(selected_websites)
                     if blocked_websites:
-                        print("Websites are blocked. To unblock them, run the program again and select 'unblock'.")
+                        print("Websites are blocked. To unblock them select the 'Unblock All Websites' option.")
                     selected_websites = []
                 input("Press Enter to continue...")
                 break
@@ -194,11 +198,11 @@ def block_websites_menu():
 # Main program loop
 while True:
     clear_terminal()
-    print("FocusUp v0.02")
+    print("FocusUp v0.03")
     print("Main Menu:")
     print("1. Block Websites")
     print("2. Show Blocked Websites")
-    print("3. Unblock all Websites")
+    print("3. Unblock All Websites")
     print("0. Exit")
 
     main_choice = input("Enter your choice: ")
