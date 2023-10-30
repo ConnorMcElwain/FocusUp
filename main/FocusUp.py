@@ -79,9 +79,9 @@ def show_blocked_websites():
                 blocked_sites.append(website)
 
     if blocked_sites:
-        print(f"Blocked websites ({len(blocked_sites)}):")
-        for index, site in enumerate(blocked_sites, start=1):
-            print(f"{index}. {site}")
+        print(f"Number of Blocked websites: {len(blocked_sites)}")
+        for site in blocked_sites:
+            print(site)
     else:
         print("No websites are currently blocked.")
 
@@ -168,30 +168,47 @@ def select_all_sites():
         except ValueError:
             print("Invalid input. Please enter a number or 'B' to go back.")
 
+# Function for blocking websites from different categories
+def block_websites_menu():
+    while True:
+        clear_terminal()
+        print("Block Websites Menu:")
+        print("1. Gaming")
+        print("2. Social")
+        print("3. All Sites")
+        print("B. Back")
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            select_category(gaming_websites)
+        elif choice == '2':
+            select_category(social_websites)
+        elif choice == '3':
+            select_all_sites()
+        elif choice.lower() == 'b':
+            return  # Go back to the main menu
+        else:
+            print("Invalid choice. Please enter a valid number or 'B' to go back.")
+
 # Main program loop
 while True:
     clear_terminal()
     print("FocusUp v0.02")
     print("Main Menu:")
-    print("1. Gaming")
-    print("2. Social")
-    print("3. All Sites")
-    print("4. Show Blocked Websites")
-    print("5. Unblock all Websites")
+    print("1. Block Websites")
+    print("2. Show Blocked Websites")
+    print("3. Unblock all Websites")
     print("0. Exit")
 
     main_choice = input("Enter your choice: ")
 
     if main_choice == '1':
-        select_category(gaming_websites)
+        block_websites_menu()
     elif main_choice == '2':
-        select_category(social_websites)
-    elif main_choice == '3':
-        select_all_sites()
-    elif main_choice == '4':
         show_blocked_websites()
         input("Press Enter to continue...")
-    elif main_choice == '5':
+    elif main_choice == '3':
         unblock_all_websites()
         input("Press Enter to continue...")
     elif main_choice == '0':
