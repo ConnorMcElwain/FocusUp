@@ -79,9 +79,9 @@ def show_blocked_websites():
                 blocked_sites.append(website)
 
     if blocked_sites:
-        print("Blocked websites:")
-        for site in blocked_sites:
-            print(site)
+        print(f"Blocked websites ({len(blocked_sites)}):")
+        for index, site in enumerate(blocked_sites, start=1):
+            print(f"{index}. {site}")
     else:
         print("No websites are currently blocked.")
 
