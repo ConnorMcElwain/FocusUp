@@ -110,6 +110,7 @@ def select_category(category):
         print(f"List of websites to block:")
         for index, website in enumerate(category, start=1):
             print(f"{index}. {website}")
+        print("4. Add Custom Website")
         print("B. Back")
 
         try:
@@ -119,10 +120,12 @@ def select_category(category):
                     print("Blocking selected websites...")
                     blocked_websites = block_websites(selected_websites)
                     if blocked_websites:
-                        print("Websites are blocked. To unblock them select the 'Unblock All Websites' option.")
+                        print("Websites are blocked. To unblock them, select the 'Unblock All Websites' option.")
                     selected_websites = []
                 input("Press Enter to continue...")
                 break
+            elif choice.lower() == '4':
+                add_custom_website()
             elif choice.lower() == 'b':
                 return  # Go back to the previous menu
             elif choice.isdigit() and 1 <= int(choice) <= len(category):
@@ -142,8 +145,7 @@ def select_all_sites():
     all_sites = gaming_websites + social_websites
     print("Main Menu:")
     print("3. All Sites")
-    for index, website in enumerate(all_sites, start=1):
-        print(f"{index}. {website}")
+    print("4. Add Custom Website")
     print("B. Back")
 
     selected_websites = []
@@ -155,10 +157,12 @@ def select_all_sites():
                     print("Blocking selected websites...")
                     blocked_websites = block_websites(selected_websites)
                     if blocked_websites:
-                        print("Websites are blocked. To unblock them select the 'Unblock All Websites' option.")
+                        print("Websites are blocked. To unblock them, select the 'Unblock All Websites' option.")
                     selected_websites = []
                 input("Press Enter to continue...")
                 break
+            elif choice.lower() == '4':
+                add_custom_website()
             elif choice.lower() == 'b':
                 return  # Go back to the previous menu
             elif choice.isdigit() and 1 <= int(choice) <= len(all_sites):
@@ -180,6 +184,7 @@ def block_websites_menu():
         print("1. Gaming")
         print("2. Social")
         print("3. All Sites")
+        print("4. Add Custom Website")
         print("B. Back")
 
         choice = input("Enter your choice: ")
@@ -192,13 +197,44 @@ def block_websites_menu():
             select_all_sites()
         elif choice.lower() == 'b':
             return  # Go back to the main menu
+        elif choice.lower() == '4':
+            add_custom_website()
         else:
             print("Invalid choice. Please enter a valid number or 'B' to go back.")
+
+# Function to add custom websites to block
+def add_custom_website():
+    while True:
+        clear_terminal()
+        print("Add Custom Website to Block:")
+        print("B. Back")
+
+        website_to_block = input("Enter the custom website to block (e.g., example.com): ")
+        if website_to_block.lower() == 'b':
+            return  # Go back to the previous menu
+        elif is_valid_domain(website_to_block):
+            if not is_website_blocked(website_to_block):
+                content = f"\n127.0.0.1 {website_to_block}"
+                with open(host_file_path, "a") as file:
+                    file.write(content)
+                print(f"{website_to_block} is blocked.")
+                input("Press Enter to continue...")
+                return
+            else:
+                print(f"{website_to_block} is already blocked. Please select another option.")
+        else:
+            print("Invalid domain. Please enter a valid domain (e.g., example.com).")
+
+# Function to check if a string is a valid domain
+def is_valid_domain(domain):
+    # Add your domain validation logic here
+    # This is a simplified example, and you can add more checks as needed
+    return '.' in domain
 
 # Main program loop
 while True:
     clear_terminal()
-    print("FocusUp v0.03")
+    print("FocusUp v0.05")
     print("Main Menu:")
     print("1. Block Websites")
     print("2. Show Blocked Websites")
